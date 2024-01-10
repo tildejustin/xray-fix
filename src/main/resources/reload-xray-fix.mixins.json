@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "package": "dev.tildejustin.xrayfix.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "accessor.BuiltChunkStorageAccessor",
+    "accessor.WorldRendererAccessor"
+  ],
+  "client": [
+    "EntityRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

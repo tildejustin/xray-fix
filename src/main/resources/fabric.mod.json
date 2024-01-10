@@ -1,21 +1,21 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "reload-xray-fix",
   "version": "${version}",
-  "name": "",
-  "description": "",
+  "name": "WorldRenderer#reload X-Ray Fix",
+  "description": "disables rendering entities in a chunk that is rebuilding",
   "authors": [
     "tildejustin"
   ],
   "contact": {
-    "homepage": "https://modrinth.com/mod/modid",
-    "sources": "https://github.com/tildejustin/modid",
-    "issues": "https://github.com/tildejustin/modid/issues"
+    "homepage": "https://modrinth.com/mod/reload-xray-fix",
+    "sources": "https://github.com/tildejustin/reload-xray-fix",
+    "issues": "https://github.com/tildejustin/reload-xray-fix/issues"
   },
   "license": "MIT",
   "environment": "*",
   "mixins": [
-    "modid.mixins.json"
+    "reload-xray-fix.mixins.json"
   ],
   "depends": {
     "minecraft": "*",

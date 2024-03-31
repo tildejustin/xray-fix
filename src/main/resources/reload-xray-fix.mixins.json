@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "accessor.BuiltChunkStorageAccessor",
+    "accessor.SodiumWorldRendererAccessor",
     "accessor.WorldRendererAccessor"
   ],
   "client": [

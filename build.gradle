@@ -13,7 +13,6 @@ base {
 repositories {
     maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots" }
     maven { url "https://jitpack.io" }
-    // flatDir { dirs "libs" }
 }
 
 loom {
@@ -29,6 +28,7 @@ dependencies {
     mappings variantOf(libs.yarn.mappings) { classifier "v2" }
     modImplementation libs.fabric.loader
     vineflowerDecompilerClasspath libs.vineflower
+    modCompileOnly libs.sodium
 }
 
 processResources {

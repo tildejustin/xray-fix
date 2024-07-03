@@ -1,10 +1,10 @@
 [versions]
 minecraft = "1.16.1"
 yarn_mappings = "1.16.1-build.22"
-fabric_loader = "0.15.7"
-loom = "1.6-SNAPSHOT"
-vineflower = "1.10.0-SNAPSHOT"
-sodium = "7e4905f134"
+fabric_loader = "0.15.11"
+loom = "1.7-SNAPSHOT"
+vineflower = "1.10.1"
+sodium = "5d596bf"
 
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }

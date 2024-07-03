@@ -11,14 +11,13 @@ base {
 }
 
 repositories {
-    maven { url "https://s01.oss.sonatype.org/content/repositories/snapshots" }
     maven { url "https://jitpack.io" }
 }
 
 loom {
     decompilers {
         vineflower {
-            options.putAll(["mark-corresponding-synthetics": "1", "ind": "    "])
+            options.putAll(["mark-corresponding-synthetics": "1", "indent-string": "    "])
         }
     }
 }
@@ -39,11 +38,14 @@ processResources {
 
 tasks.withType(JavaCompile).configureEach {
     it.options.encoding = "UTF-8"
-    if (JavaVersion.current().isJava9Compatible()) it.options.release.set(8)
+    if (JavaVersion.current().isJava9Compatible()) {
+        it.options.release.set(8)
+    }
 }
 
 java {
     sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
+    withSourcesJar()
 }
 
 jar {

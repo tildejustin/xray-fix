@@ -8,7 +8,10 @@
     "accessor.WorldRendererAccessor"
   ],
   "client": [
-    "EntityRendererMixin"
+    "CameraMixin",
+    "EntityRendererMixin",
+    "GameRendererMixin",
+    "InGameOverlayRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -1,16 +1,14 @@
 [versions]
 minecraft = "1.16.1"
-yarn_mappings = "1.16.1-build.22"
-fabric_loader = "0.15.11"
-loom = "1.7-SNAPSHOT"
-vineflower = "1.10.1"
-sodium = "5d596bf"
+yarn_mappings = "1.16.1-build.28"
+fabric_loader = "0.16.14"
+loom = "1.11-SNAPSHOT"
+sodium = "171527f" # v2.5.0+1.16.1
 
 [libraries]
 minecraft = { module = "com.mojang:minecraft", version.ref = "minecraft" }
 yarn_mappings = { module = "dev.tildejustin:yarn", version.ref = "yarn_mappings" }
 fabric_loader = { module = "net.fabricmc:fabric-loader", version.ref = "fabric_loader" }
-vineflower = { module = "org.vineflower:vineflower", version.ref = "vineflower" }
 sodium = { module = "com.github.Minecraft-Java-Edition-Speedrunning:sodium", version.ref = "sodium" }
 
 [plugins]

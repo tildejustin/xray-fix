@@ -8,4 +8,10 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 public interface WorldRendererAccessor {
     @Accessor("chunks")
     BuiltChunkStorage getChunks();
+
+    @Accessor("regularEntityCount")
+    int getRegularEntityCount();
+
+    @Accessor("regularEntityCount")
+    void setRegularEntityCount(int regularEntityCount);
 }

@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
-  "id": "reload-xray-fix",
+  "id": "xray-fix",
   "version": "${version}",
-  "name": "WorldRenderer#reload X-Ray Fix",
-  "description": "disables rendering entities in a chunk that is rebuilding",
+  "name": "X-Ray Fix",
+  "description": "fixes various xrays in the vanilla game",
   "authors": [
     "tildejustin"
   ],
   "contact": {
-    "homepage": "https://github.com/tildejustin/reload-xray-fix",
-    "sources": "https://github.com/tildejustin/reload-xray-fix",
-    "issues": "https://github.com/tildejustin/reload-xray-fix/issues"
+    "homepage": "https://github.com/tildejustin/xray-fix",
+    "sources": "https://github.com/tildejustin/xray-fix",
+    "issues": "https://github.com/tildejustin/xray-fix/issues"
   },
   "license": "MIT",
   "environment": "*",

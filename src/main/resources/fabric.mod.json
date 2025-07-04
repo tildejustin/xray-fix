@@ -15,7 +15,7 @@
   "license": "MIT",
   "environment": "*",
   "mixins": [
-    "reload-xray-fix.mixins.json"
+    "xray-fix.mixins.json"
   ],
   "depends": {
     "minecraft": "*",

@@ -3,18 +3,16 @@
   "package": "dev.tildejustin.xrayfix.mixin",
   "compatibilityLevel": "JAVA_8",
   "client": [
-    "CameraMixin",
     "EntityRendererMixin",
     "GameRendererMixin",
     "InGameOverlayRendererMixin",
     "accessor.BuiltChunkStorageAccessor",
+    "accessor.CameraAccessor",
+    "accessor.InGameOverlayRendererAccessor",
     "accessor.SodiumWorldRendererAccessor",
     "accessor.WorldRendererAccessor"
   ],
   "injectors": {
     "defaultRequire": 1
-  },
-  "mixins": [
-    "accessor.InGameOverlayRendererAccessor"
-  ]
+  }
 }

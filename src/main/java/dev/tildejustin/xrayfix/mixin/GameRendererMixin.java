@@ -8,6 +8,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.*;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.EntityPose;
 import net.minecraft.util.math.BlockPos;
 import org.spongepowered.asm.mixin.*;
 import org.spongepowered.asm.mixin.injection.*;
@@ -24,6 +25,9 @@ public abstract class GameRendererMixin {
     @Unique
     private static final Set<Block> ILLEGAL_BLOCKS = Sets.newHashSet(Blocks.COMPOSTER);
 
+    @Unique
+    private static EntityPose currPose = EntityPose.STANDING, lastPose = EntityPose.STANDING;
+
 
     @SuppressWarnings("deprecation")
     @Inject(method = "renderHand", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;pop()V", shift = At.Shift.AFTER))
@@ -34,13 +38,18 @@ public abstract class GameRendererMixin {
         BlockPos.Mutable mutable = new BlockPos.Mutable();
 
         ClientPlayerEntity player = this.client.player;
-        // System.out.println(camera.getFocusedEntity().getStandingEyeHeight() + " " + ((CameraAccessor) camera).getCameraY());
-        if (player != null && Math.abs(camera.getFocusedEntity().getStandingEyeHeight() - ((CameraAccessor) camera).getCameraY()) > 1e-4) {
+        System.out.println(camera.getFocusedEntity().getStandingEyeHeight() + " " + ((CameraAccessor) camera).getCameraY());
+        if (player != null && currPose != player.getPose()) {
+            lastPose = currPose;
+            currPose = player.getPose();
+        }
+        System.out.println(currPose.name() + " " + lastPose.name());
+        if (player != null && (player.getPose() == EntityPose.SWIMMING || lastPose == EntityPose.SWIMMING) && ((CameraAccessor) camera).getCameraY() - camera.getFocusedEntity().getStandingEyeHeight() > 1e-4) {
             for (int i = 0; i < 8; i++) {
-                double d = camera.getPos().getX() + (i % 2 - 0.5F) * camera.getFocusedEntity().getWidth() * 0.8F;
-                double e = camera.getPos().getY() + ((i >> 1) % 2 - 0.5F) * 0.1F;
-                double f = camera.getPos().getZ() + ((i >> 2) % 2 - 0.5F) * camera.getFocusedEntity().getWidth() * 0.8F;
-                mutable.set(d, e, f);
+                double x = camera.getPos().getX() + (i % 2 - 0.5F) * camera.getFocusedEntity().getWidth() * 0.8F;
+                double y = camera.getPos().getY() + ((i >> 1) % 2 - 0.5F) * 0.1F;
+                double z = camera.getPos().getZ() + ((i >> 2) % 2 - 0.5F) * camera.getFocusedEntity().getWidth() * 0.8F;
+                mutable.set(x, y, z);
                 BlockState blockState = camera.getFocusedEntity().world.getBlockState(mutable);
                 if (blockState.getRenderType() != BlockRenderType.INVISIBLE && blockState.shouldBlockVision(camera.getFocusedEntity().world, mutable)) {
                     target = blockState;
@@ -59,4 +68,3 @@ public abstract class GameRendererMixin {
         }
     }
 }
-

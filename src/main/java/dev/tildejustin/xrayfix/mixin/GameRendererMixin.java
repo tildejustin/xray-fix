@@ -38,12 +38,12 @@ public abstract class GameRendererMixin {
         BlockPos.Mutable mutable = new BlockPos.Mutable();
 
         ClientPlayerEntity player = this.client.player;
-        System.out.println(camera.getFocusedEntity().getStandingEyeHeight() + " " + ((CameraAccessor) camera).getCameraY());
+        // System.out.println(camera.getFocusedEntity().getStandingEyeHeight() + " " + ((CameraAccessor) camera).getCameraY());
         if (player != null && currPose != player.getPose()) {
             lastPose = currPose;
             currPose = player.getPose();
         }
-        System.out.println(currPose.name() + " " + lastPose.name());
+        // System.out.println(currPose.name() + " " + lastPose.name());
         if (player != null && (player.getPose() == EntityPose.SWIMMING || lastPose == EntityPose.SWIMMING) && ((CameraAccessor) camera).getCameraY() - camera.getFocusedEntity().getStandingEyeHeight() > 1e-4) {
             for (int i = 0; i < 8; i++) {
                 double x = camera.getPos().getX() + (i % 2 - 0.5F) * camera.getFocusedEntity().getWidth() * 0.8F;

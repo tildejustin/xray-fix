@@ -23,7 +23,8 @@ public abstract class EntityRendererMixin {
             if (FabricLoader.getInstance().isModLoaded("sodium")) built = SodiumCompat.hasRenderData(entity, worldRenderer);
             else {
                 BuiltChunkStorage builtChunkStorage = ((WorldRendererAccessor) worldRenderer).getChunks();
-                built = ((BuiltChunkStorageAccessor) builtChunkStorage).callGetRenderedChunk(entity.getBlockPos()).getData() != ChunkBuilder.ChunkData.EMPTY;
+                ChunkBuilder.BuiltChunk builtChunk = ((BuiltChunkStorageAccessor) builtChunkStorage).callGetRenderedChunk(entity.getBlockPos());
+                built = builtChunk != null && builtChunk.getData() != ChunkBuilder.ChunkData.EMPTY;
             }
             if (built) return;
             if (!EntityRendererHelper.otherwiseRendered(entity)) {

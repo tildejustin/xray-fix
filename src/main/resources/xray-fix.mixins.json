@@ -14,5 +14,9 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "mixins": [
+    "ServerPlayNetworkHandlerMixin",
+    "accessor.EntityAccessor"
+  ]
 }

@@ -32,7 +32,7 @@ public abstract class GameRendererMixin {
     @SuppressWarnings("deprecation")
     @Inject(method = "renderHand", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/math/MatrixStack;pop()V", shift = At.Shift.AFTER))
     public void onRenderSight(MatrixStack matrices, Camera camera, float tickDelta, CallbackInfo ci) {
-        if (this.client.player != null && this.client.player.noClip) return;
+        if ((this.client.player != null && this.client.player.noClip) || camera.getFocusedEntity().world == null) return;
 
         BlockState target = null;
         BlockPos.Mutable mutable = new BlockPos.Mutable();

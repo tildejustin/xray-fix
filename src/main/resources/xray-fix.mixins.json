@@ -6,8 +6,6 @@
     "EntityRendererMixin",
     "GameRendererMixin",
     "InGameOverlayRendererMixin",
-    "ParticleManagerMixin",
-    "ParticleMixin",
     "accessor.BuiltChunkStorageAccessor",
     "accessor.CameraAccessor",
     "accessor.InGameOverlayRendererAccessor",

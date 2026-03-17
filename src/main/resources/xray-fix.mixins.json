@@ -6,6 +6,8 @@
     "EntityRendererMixin",
     "GameRendererMixin",
     "InGameOverlayRendererMixin",
+    "ParticleManagerMixin",
+    "ParticleMixin",
     "accessor.BuiltChunkStorageAccessor",
     "accessor.CameraAccessor",
     "accessor.InGameOverlayRendererAccessor",
@@ -14,9 +16,5 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  },
-  "mixins": [
-    "ServerPlayNetworkHandlerMixin",
-    "accessor.EntityAccessor"
-  ]
+  }
 }

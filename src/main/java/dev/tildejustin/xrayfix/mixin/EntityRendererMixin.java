@@ -2,10 +2,8 @@ package dev.tildejustin.xrayfix.mixin;
 
 import dev.tildejustin.xrayfix.*;
 import dev.tildejustin.xrayfix.mixin.accessor.*;
-import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.*;
-import net.minecraft.client.render.chunk.ChunkBuilder;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -19,14 +17,7 @@ public abstract class EntityRendererMixin {
         if (cir.getReturnValue()) {
             MinecraftClient client = MinecraftClient.getInstance();
             WorldRenderer worldRenderer = client.worldRenderer;
-            boolean built;
-            if (FabricLoader.getInstance().isModLoaded("sodium")) built = SodiumCompat.hasRenderData(entity, worldRenderer);
-            else {
-                BuiltChunkStorage builtChunkStorage = ((WorldRendererAccessor) worldRenderer).getChunks();
-                ChunkBuilder.BuiltChunk builtChunk = ((BuiltChunkStorageAccessor) builtChunkStorage).callGetRenderedChunk(entity.getBlockPos());
-                built = builtChunk != null && builtChunk.getData() != ChunkBuilder.ChunkData.EMPTY;
-            }
-            if (built) return;
+            if (ChunkRendererHelper.isRenderedChunk(entity.getBlockPos())) return;
             if (!EntityRendererHelper.otherwiseRendered(entity)) {
                 // aw and ++ would be better performance
                 ((WorldRendererAccessor) worldRenderer).setRegularEntityCount(((WorldRendererAccessor) worldRenderer).getRegularEntityCount() + 1);

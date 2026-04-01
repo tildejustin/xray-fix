@@ -17,7 +17,12 @@ public class ParticleManagerMixin {
 
     @WrapWithCondition(method = "renderParticles", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/Particle;buildGeometry(Lnet/minecraft/client/render/VertexConsumer;Lnet/minecraft/client/render/Camera;F)V"))
     public boolean onRenderParticle(Particle instance, VertexConsumer vertexConsumer, Camera camera, float v) {
-        return !((ParticleCullingProvider) instance).xray_fix$shouldCull();
+        Boolean cull = ((ParticleCullingProvider) instance).xray_fix$shouldCull();
+        if (cull == null) {
+            cull = ParticleManagerHelper.shouldCull(instance);
+            ((ParticleCullingProvider) instance).xray_fix$setCull(cull);
+        }
+        return !cull;
     }
 
     @Inject(method = "tickParticle", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/Particle;tick()V", shift = At.Shift.AFTER))

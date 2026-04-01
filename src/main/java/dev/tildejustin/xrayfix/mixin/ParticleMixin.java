@@ -9,10 +9,10 @@ import org.spongepowered.asm.mixin.Unique;
 public class ParticleMixin implements ParticleCullingProvider {
 
     @Unique
-    private boolean cull = true;
+    private Boolean cull = null;
 
     @Override
-    public boolean xray_fix$shouldCull() {
+    public Boolean xray_fix$shouldCull() {
         return this.cull;
     }
 

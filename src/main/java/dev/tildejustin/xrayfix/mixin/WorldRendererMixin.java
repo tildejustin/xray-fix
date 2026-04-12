@@ -28,8 +28,6 @@ public abstract class WorldRendererMixin {
     @Inject(method = "render",at = @At("TAIL"))
     public void render(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f matrix4f, CallbackInfo ci) {
         if(client.player == null || client.player.noClip || camera.getFocusedEntity().world == null) return;
-        Profiler profiler = client.getProfiler();
-        profiler.swap("terrain");
         Matrix4f matrix4f2 = matrix4f.copy();
         Matrix4f modelMatrix = matrices.peek().getModel();
         matrix4f2.multiply(modelMatrix);
@@ -71,7 +69,6 @@ public abstract class WorldRendererMixin {
         RenderSystem.enableCull();
         RenderSystem.disablePolygonOffset();
         RenderSystem.polygonOffset(0,0);
-        profiler.swap("entities");
     }
 
     @Unique

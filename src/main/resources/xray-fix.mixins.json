@@ -3,6 +3,8 @@
   "package": "dev.tildejustin.xrayfix.mixin",
   "compatibilityLevel": "JAVA_8",
   "client": [
+    "BlockMixin",
+    "BlockOcclusionCacheMixin",
     "EntityRendererMixin",
     "GameRendererMixin",
     "InGameOverlayRendererMixin",

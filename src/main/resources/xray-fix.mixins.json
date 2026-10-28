@@ -9,7 +9,6 @@
     "GameRendererMixin",
     "InGameOverlayRendererMixin",
     "ParticleManagerMixin",
-    "ParticleMixin",
     "WorldRendererMixin",
     "accessor.BuiltChunkStorageAccessor",
     "accessor.CameraAccessor",

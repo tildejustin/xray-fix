@@ -11,16 +11,20 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 
 public class ChunkRendererHelper {
+    private static final boolean SODIUM = FabricLoader.getInstance().isModLoaded("sodium");
 
     public static boolean isRenderedChunk(BlockPos blockPos) {
         MinecraftClient client = MinecraftClient.getInstance();
         WorldRenderer worldRenderer = client.worldRenderer;
+        int chunkY = MathHelper.clamp(blockPos.getY() >> 4, 0, 15);
         boolean built;
-        if (FabricLoader.getInstance().isModLoaded("sodium")) built = SodiumCompat.hasRenderData(blockPos.getX() >> 4, MathHelper.clamp(blockPos.getY() >> 4, 0, 15), blockPos.getZ() >> 4, worldRenderer);
+        if (SODIUM) built = SodiumCompat.hasRenderData(blockPos.getX() >> 4, chunkY, blockPos.getZ() >> 4, worldRenderer);
         else {
+            BlockPos origin = new BlockPos(blockPos.getX() & ~15, chunkY << 4, blockPos.getZ() & ~15);
             BuiltChunkStorage builtChunkStorage = ((WorldRendererAccessor) worldRenderer).getChunks();
-            ChunkBuilder.BuiltChunk builtChunk = ((BuiltChunkStorageAccessor) builtChunkStorage).callGetRenderedChunk(blockPos);
-            built = builtChunk != null && builtChunk.getData() != ChunkBuilder.ChunkData.EMPTY;
+            ChunkBuilder.BuiltChunk builtChunk = ((BuiltChunkStorageAccessor) builtChunkStorage).callGetRenderedChunk(origin);
+            // the storage wraps around the camera, so positions outside render distance land on some other chunk
+            built = builtChunk != null && builtChunk.getOrigin().equals(origin) && builtChunk.getData() != ChunkBuilder.ChunkData.EMPTY;
         }
         return built;
     }

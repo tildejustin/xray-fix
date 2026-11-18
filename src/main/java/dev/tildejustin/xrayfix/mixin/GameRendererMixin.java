@@ -40,7 +40,7 @@ public abstract class GameRendererMixin {
         }
         // System.out.println(currPose.name() + " " + lastPose.name());
         if (player != null && (player.getPose() == EntityPose.SWIMMING || lastPose == EntityPose.SWIMMING)
-                && Math.abs(((CameraAccessor) camera).getCameraY() - camera.getFocusedEntity().getStandingEyeHeight()) > 1e-4
+                && ((CameraAccessor) camera).getCameraY() - camera.getFocusedEntity().getStandingEyeHeight() > 1e-4
                 && !camera.getSubmergedFluidState().isIn(FluidTags.WATER)) {
             for (int i = 0; i < 8; i++) {
                 double x = camera.getPos().getX() + (i % 2 - 0.5F) * camera.getFocusedEntity().getWidth() * 0.8F;

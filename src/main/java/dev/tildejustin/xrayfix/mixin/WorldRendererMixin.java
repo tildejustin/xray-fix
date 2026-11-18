@@ -44,20 +44,22 @@ public abstract class WorldRendererMixin {
             cornerPos[i] = camPos.add(frustumCorners[i].getX(), frustumCorners[i].getY(), frustumCorners[i].getZ());
         }
         if(Double.isNaN(cornerPos[0].x)) return;
-        double minX = Math.min(camPos.x, Math.min(Math.min(cornerPos[0].x,cornerPos[1].x),Math.min(cornerPos[2].x,cornerPos[3].x)));
-        double maxX = Math.max(camPos.x, Math.max(Math.max(cornerPos[0].x,cornerPos[1].x),Math.max(cornerPos[2].x,cornerPos[3].x)));
-        double minY = Math.min(camPos.y, Math.min(Math.min(cornerPos[0].y,cornerPos[1].y),Math.min(cornerPos[2].y,cornerPos[3].y)));
-        double maxY = Math.max(camPos.y, Math.max(Math.max(cornerPos[0].y,cornerPos[1].y),Math.max(cornerPos[2].y,cornerPos[3].y)));
-        double minZ = Math.min(camPos.z, Math.min(Math.min(cornerPos[0].z,cornerPos[1].z),Math.min(cornerPos[2].z,cornerPos[3].z)));
-        double maxZ = Math.max(camPos.z, Math.max(Math.max(cornerPos[0].z,cornerPos[1].z),Math.max(cornerPos[2].z,cornerPos[3].z)));
+        Vec3d fluidFogEye = camera.isThirdPerson() ? AntiXrayBlocks.getFluidFogEye(client.world, camPos) : null;
+        Vec3d eye = fluidFogEye != null ? fluidFogEye : camPos;
+        double minX = Math.min(eye.x, Math.min(Math.min(cornerPos[0].x,cornerPos[1].x),Math.min(cornerPos[2].x,cornerPos[3].x)));
+        double maxX = Math.max(eye.x, Math.max(Math.max(cornerPos[0].x,cornerPos[1].x),Math.max(cornerPos[2].x,cornerPos[3].x)));
+        double minY = Math.min(eye.y, Math.min(Math.min(cornerPos[0].y,cornerPos[1].y),Math.min(cornerPos[2].y,cornerPos[3].y)));
+        double maxY = Math.max(eye.y, Math.max(Math.max(cornerPos[0].y,cornerPos[1].y),Math.max(cornerPos[2].y,cornerPos[3].y)));
+        double minZ = Math.min(eye.z, Math.min(Math.min(cornerPos[0].z,cornerPos[1].z),Math.min(cornerPos[2].z,cornerPos[3].z)));
+        double maxZ = Math.max(eye.z, Math.max(Math.max(cornerPos[0].z,cornerPos[1].z),Math.max(cornerPos[2].z,cornerPos[3].z)));
         Set<BlockPos> nearBlocks = getBlocks(minX,minY,minZ,maxX,maxY,maxZ);
         if(nearBlocks.isEmpty()) return;
 
         List<List<float[]>> shadows = new ArrayList<>();
         for (BlockPos pos : nearBlocks) {
-            double relX = pos.getX() - camPos.x;
-            double relY = pos.getY() - camPos.y;
-            double relZ = pos.getZ() - camPos.z;
+            double relX = pos.getX() - eye.x;
+            double relY = pos.getY() - eye.y;
+            double relZ = pos.getZ() - eye.z;
             client.world.getBlockState(pos).getOutlineShape(client.world, pos).forEachBox((boxMinX, boxMinY, boxMinZ, boxMaxX, boxMaxY, boxMaxZ) -> {
                 List<float[]> shadow = getShadow(viewProjection, relX + boxMinX, relY + boxMinY, relZ + boxMinZ, relX + boxMaxX, relY + boxMaxY, relZ + boxMaxZ);
                 if (shadow != null) shadows.add(shadow);
@@ -99,7 +101,8 @@ public abstract class WorldRendererMixin {
     // screen area covered by the part of the box between the eye and the near plane, as a convex polygon
     @Unique
     private static List<float[]> getShadow(Matrix4f viewProjection, double minX, double minY, double minZ, double maxX, double maxY, double maxZ) {
-        if (minX <= 0 && maxX >= 0 && minY <= 0 && maxY >= 0 && minZ <= 0 && maxZ >= 0) {
+        float minDepth = 1e-4f;
+        if (minX < -minDepth && maxX > minDepth && minY < -minDepth && maxY > minDepth && minZ < -minDepth && maxZ > minDepth) {
             return Arrays.asList(new float[]{-1, -1}, new float[]{1, -1}, new float[]{1, 1}, new float[]{-1, 1});
         }
         Vector4f[] corners = new Vector4f[8];
@@ -108,7 +111,6 @@ public abstract class WorldRendererMixin {
             corners[corner].transform(viewProjection);
         }
         // in clip space w is the view depth and z + w crosses zero at the near plane
-        float minDepth = 1e-4f;
         List<float[]> points = new ArrayList<>();
         for (Vector4f corner : corners) {
             if (corner.getW() >= minDepth && corner.getZ() + corner.getW() <= 0) points.add(project(corner));

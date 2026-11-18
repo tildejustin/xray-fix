@@ -5,6 +5,7 @@
   "client": [
     "BlockMixin",
     "BlockOcclusionCacheMixin",
+    "CameraMixin",
     "EntityRendererMixin",
     "GameRendererMixin",
     "InGameOverlayRendererMixin",

@@ -1,33 +1,16 @@
 package dev.tildejustin.xrayfix.mixin;
 
 import com.llamalad7.mixinextras.injector.v2.WrapWithCondition;
-import dev.tildejustin.xrayfix.ParticleCullingProvider;
 import dev.tildejustin.xrayfix.ParticleManagerHelper;
-import net.minecraft.client.particle.Particle;
-import net.minecraft.client.particle.ParticleManager;
-import net.minecraft.client.render.Camera;
-import net.minecraft.client.render.VertexConsumer;
+import net.minecraft.client.particle.*;
+import net.minecraft.client.render.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ParticleManager.class)
 public class ParticleManagerMixin {
-
     @WrapWithCondition(method = "renderParticles", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/Particle;buildGeometry(Lnet/minecraft/client/render/VertexConsumer;Lnet/minecraft/client/render/Camera;F)V"))
     public boolean onRenderParticle(Particle instance, VertexConsumer vertexConsumer, Camera camera, float v) {
-        Boolean cull = ((ParticleCullingProvider) instance).xray_fix$shouldCull();
-        if (cull == null) {
-            cull = ParticleManagerHelper.shouldCull(instance);
-            ((ParticleCullingProvider) instance).xray_fix$setCull(cull);
-        }
-        return !cull;
+        return !ParticleManagerHelper.shouldCull(instance);
     }
-
-    @Inject(method = "tickParticle", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/particle/Particle;tick()V", shift = At.Shift.AFTER))
-    public void onTickParticle(Particle particle, CallbackInfo ci) {
-        ((ParticleCullingProvider) particle).xray_fix$setCull(ParticleManagerHelper.shouldCull(particle));
-    }
-
 }

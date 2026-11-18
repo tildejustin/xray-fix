@@ -1,15 +1,20 @@
 package dev.tildejustin.xrayfix;
 
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.render.Camera;
 import net.minecraft.entity.*;
 
 public class EntityRendererHelper {
     // WorldRenderer#render, in entityRenderDispatcher.shouldRender loop
-    public static boolean otherwiseRendered(Entity entity) {
-        Camera camera = MinecraftClient.getInstance().gameRenderer.getCamera();
-        return entity.hasPassengerDeep(MinecraftClient.getInstance().player) && (entity != camera.getFocusedEntity()
+    public static boolean countedIfRendered(Entity entity) {
+        MinecraftClient client = MinecraftClient.getInstance();
+        Camera camera = client.gameRenderer.getCamera();
+
+        if (entity.hasPassengerDeep(client.player)) return false;
+        return (entity != camera.getFocusedEntity()
                 || camera.isThirdPerson()
-                || camera.getFocusedEntity() instanceof LivingEntity && ((LivingEntity) camera.getFocusedEntity()).isSleeping());
+                || camera.getFocusedEntity() instanceof LivingEntity && ((LivingEntity) camera.getFocusedEntity()).isSleeping()) && (!(entity instanceof ClientPlayerEntity)
+                || camera.getFocusedEntity() == entity);
     }
 }

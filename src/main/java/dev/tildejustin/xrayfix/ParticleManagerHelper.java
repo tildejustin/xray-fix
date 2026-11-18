@@ -1,25 +1,19 @@
 package dev.tildejustin.xrayfix;
 
-import com.google.common.collect.Lists;
 import net.minecraft.client.particle.Particle;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
+import net.minecraft.util.math.*;
 
 public class ParticleManagerHelper {
 
     public static boolean shouldCull(Particle particle) {
         Box box = particle.getBoundingBox();
-        for (BlockPos pos : Lists.newArrayList(
-                new BlockPos(box.minX, box.minY, box.minZ),
-                new BlockPos(box.minX, box.maxY, box.minZ),
-                new BlockPos(box.maxX, box.minY, box.minZ),
-                new BlockPos(box.maxX, box.maxY, box.minZ),
-                new BlockPos(box.minX, box.minY, box.maxZ),
-                new BlockPos(box.minX, box.maxY, box.maxZ),
-                new BlockPos(box.maxX, box.minY, box.maxZ),
-                new BlockPos(box.maxX, box.maxY, box.maxZ)
-        )) {
-            if (!ChunkRendererHelper.isRenderedChunk(pos)) return true;
+        BlockPos.Mutable section = new BlockPos.Mutable();
+        for (int x = MathHelper.floor(box.minX) >> 4; x <= MathHelper.floor(box.maxX) >> 4; x++) {
+            for (int y = MathHelper.floor(box.minY) >> 4; y <= MathHelper.floor(box.maxY) >> 4; y++) {
+                for (int z = MathHelper.floor(box.minZ) >> 4; z <= MathHelper.floor(box.maxZ) >> 4; z++) {
+                    if (!ChunkRendererHelper.isRenderedChunk(section.set(x << 4, y << 4, z << 4))) return true;
+                }
+            }
         }
         return false;
     }

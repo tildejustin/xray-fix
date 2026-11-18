@@ -5,7 +5,10 @@
   "name": "X-Ray Fix",
   "description": "fixes various xrays in the vanilla game",
   "authors": [
-    "tildejustin"
+    "tildejustin",
+    "RedLime",
+    "loth",
+    "Vibzz"
   ],
   "contact": {
     "homepage": "https://github.com/tildejustin/xray-fix",

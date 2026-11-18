@@ -16,7 +16,12 @@
     "accessor.SodiumWorldRendererAccessor",
     "accessor.WorldRendererAccessor"
   ],
+  "mixins": [],
   "injectors": {
     "defaultRequire": 1
+  },
+  "overwrites": {
+    "conformVisibility": true,
+    "requireAnnotations": true
   }
 }
